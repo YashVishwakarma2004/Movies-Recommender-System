@@ -7,7 +7,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 
-app = Flask(__name__)
+main = Flask(__name__)
 
 MODEL_FILENAME = "model.pkl"
 # Get Drive file id from env var, or set it here for testing (not for production)
@@ -36,7 +36,7 @@ def load_model():
 # Load model (once)
 model = load_model()
 
-@app.route("/")
+@main.route("/")
 def home():
     return "Model loaded and app running!"
 
@@ -139,6 +139,7 @@ if st.button("Recommend"):
     st.subheader("You might also like:")
     for i in recommendation:
         st.write("🎞️", i)
+
 
 
 
