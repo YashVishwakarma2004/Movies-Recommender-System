@@ -1,6 +1,49 @@
+# app.py (snippet)
+import os
+import gdown
+import pickle
+from flask import Flask
 import streamlit as st
 import pickle
 import pandas as pd
+
+app = Flask(__name__)
+
+MODEL_FILENAME = "model.pkl"
+# Get Drive file id from env var, or set it here for testing (not for production)
+DRIVE_FILE_ID = os.environ.get("MODEL_DRIVE_ID", "PUT_FILE_ID_HERE")
+
+def download_model_if_missing():
+    if os.path.exists(MODEL_FILENAME):
+        print("Model already exists, skipping download.")
+        return
+
+    if not DRIVE_FILE_ID or DRIVE_FILE_ID == "PUT_FILE_ID_HERE":
+        raise RuntimeError("MODEL_DRIVE_ID env var not set or invalid.")
+
+    # Construct direct download URL for gdown
+    url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
+    print(f"Downloading model from {url} ...")
+    # gdown will handle large files and redirections
+    gdown.download(url, MODEL_FILENAME, quiet=False)
+
+def load_model():
+    download_model_if_missing()
+    with open(MODEL_FILENAME, "rb") as f:
+        model = pickle.load(f)
+    return model
+
+# Load model (once)
+model = load_model()
+
+@app.route("/")
+def home():
+    return "Model loaded and app running!"
+
+# rest of your routes use `model` variable
+if __name__ == "__main__":
+    app.run(debug=True)
+
 
 # 🎨 Background Style
 st.markdown(
@@ -96,3 +139,4 @@ if st.button("Recommend"):
     st.subheader("You might also like:")
     for i in recommendation:
         st.write("🎞️", i)
+
