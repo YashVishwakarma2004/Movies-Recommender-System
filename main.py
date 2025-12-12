@@ -9,9 +9,9 @@ import pandas as pd
 
 main = Flask(__name__)
 
-MODEL_FILENAME = "model.pkl"
+MODEL_FILENAME = "similarity.pkl"
 # Get Drive file id from env var, or set it here for testing (not for production)
-DRIVE_FILE_ID = os.environ.get("MODEL_DRIVE_ID", "PUT_FILE_ID_HERE")
+DRIVE_FILE_ID = os.environ.get("MODEL_DRIVE_ID", "16brzhMb_UWb_pzNpx5TUkp6ZXr9mhH_K")
 
 def download_model_if_missing():
     if os.path.exists(MODEL_FILENAME):
@@ -20,6 +20,7 @@ def download_model_if_missing():
 
     if not DRIVE_FILE_ID or DRIVE_FILE_ID == "PUT_FILE_ID_HERE":
         raise RuntimeError("MODEL_DRIVE_ID env var not set or invalid.")
+        
 
     # Construct direct download URL for gdown
     url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
@@ -139,6 +140,7 @@ if st.button("Recommend"):
     st.subheader("You might also like:")
     for i in recommendation:
         st.write("🎞️", i)
+
 
 
 
