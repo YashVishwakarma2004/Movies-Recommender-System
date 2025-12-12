@@ -25,7 +25,7 @@ def download_model_if_missing():
     url = f"https://drive.google.com/uc?id={DRIVE_FILE_ID}"
     print(f"Downloading model from {url} ...")
     if not os.path.exists("similarity.pkl"):
-        url = "https://drive.google.com/uc?id=YOUR_ID"
+        url = "https://drive.google.com/uc?id=16brzhMb_UWb_pzNpx5TUkp6ZXr9mhH_K"
         gdown.download(url, "similarity.pkl", quiet=False)
 
 
@@ -109,4 +109,5 @@ if st.button("Recommend"):
     st.subheader("You may also like:")
     for rec in recommend(selected_movie):
         st.write("🎞️", rec)
+
 
